@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A visual explainer of a Treasury-yield hazard model for 2026 Federal Reserve rate hikes." />
+    <meta name="theme-color" content="#17122b" />
+    <title>Hazard Rates</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317122b'/%3E%3Cpath d='M16 44V24M27 44V16M38 44V29M49 44V10' stroke='%23ffce56' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+    <header class="hero">
+      <nav class="mini-nav" aria-label="Project links">
+        <span class="eyebrow">INTRO TO PREDICTION MARKETS</span>
+        <!-- <a href="fed_hike_hazard_model.ipynb" download>Notebook ↓</a> -->
+      </nav>
+      <div class="hero-copy">
+        <h1 id="story-title">Will the Fed<br /><em> increase rates?</em></h1>
+        <p class="dek" id="story-dek"></p>
+        <div class="scroll-cue" aria-hidden="true"><span>Scroll ↓</span><b></b></div>
+      </div>
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="hero-number"><span id="hero-probability">47.7</span><span>%</span></div>
+        <div class="hero-label">conditional hazard<br />at a scheduled meeting</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="plain-language">
+        <h2>A hazard rate asks:<br /><span>“What are the odds it happens now, given it hasn’t happened yet?”</span></h2>
+        <div class="coin-demo" aria-label="Hazard rate analogy">
+          <div class="coin-path">
+            <div class="coin missed">SEP <small>no hike</small></div>
+            <div class="connector">×</div>
+            <div class="coin active">OCT <small>hike?</small></div>
+          </div>
+          <p>October’s hazard only matters in the world where September passed without a hike. Waiting does not automatically make a hike more likely—the economic signals determine the hazard.</p>
+        </div>
+      </section>
+
+      <section class="scrolly" id="forecast-story">
+        <div class="sticky-wrap">
+          <div class="forecast-card" id="forecast-card" aria-live="polite">
+            <div class="card-topline">
+              <span id="card-stage">MODEL SETUP</span>
+              <span id="as-of"></span>
+            </div>
+            <div id="viz" class="viz"></div>
+            <div class="card-caption">
+              <h3 id="card-title">The curve gives us clues.</h3>
+              <p id="card-copy">Short yields react strongly to expected Fed policy. Long yields also carry expectations about inflation and growth.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="steps">
+          <article class="step is-active" data-scene="curve">
+            <span class="step-number">01</span>
+            <h3>Read the Treasury curve</h3>
+            <p>The model uses 3-month, 6-month, 10-year, and 30-year Treasury yields. It compares their shape with the Fed’s current target.</p>
+          </article>
+
+          <article class="step" data-scene="train">
+            <span class="step-number">02</span>
+            <h3>Teach it with history</h3>
+            <p>We show the model the yield curve from the <strong>previous month</strong>, then ask whether the Fed raised rates next. Lagging the yields prevents the future from leaking into the prediction.</p>
+          </article>
+
+          <article class="step" data-scene="hazard">
+            <span class="step-number">03</span>
+            <h3>Calculate the hazard</h3>
+            <p>Under the latest curve, the model estimates a <strong>47.7% conditional chance</strong> at each scheduled meeting—assuming the curve stays unchanged and no earlier hike has occurred.</p>
+          </article>
+
+          <article class="step" data-scene="months">
+            <span class="step-number">04</span>
+            <h3>Move through each month</h3>
+            <p>“A hike at this meeting” and “the first hike happens this month” are different. Scroll through the months to watch survival shrink.</p>
+          </article>
+
+          <article class="step month-step" data-scene="month" data-month="0">
+            <span class="month-pill">SEPTEMBER</span>
+            <h3>First stop: 47.7%</h3>
+            <p>Nothing has to happen first, so September’s hazard and first-hike probability are the same.</p>
+          </article>
+
+          <article class="step month-step" data-scene="month" data-month="1">
+            <span class="month-pill">OCTOBER</span>
+            <h3>47.7% hazard, but 24.9% first-hike chance</h3>
+            <p>October must pass through September’s 52.3% “no hike” door first: 52.3% × 47.7% = 24.9%.</p>
+          </article>
+
+          <article class="step month-step" data-scene="month" data-month="2">
+            <span class="month-pill no-meeting">NOVEMBER</span>
+            <h3>No meeting, no routine hike</h3>
+            <p>The official calendar has no November FOMC meeting, so the scheduled-meeting probability is 0%. Emergency action is outside this model.</p>
+          </article>
+
+          <article class="step month-step" data-scene="month" data-month="3">
+            <span class="month-pill">DECEMBER</span>
+            <h3>13.0% chance of the first hike</h3>
+            <p>December can be first only if September and October both pass without a hike: 52.3% × 52.3% × 47.7% ≈ 13.0%.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="reality-check">
+        <div>
+          <h2>The model says <span class="model-color" id="model-comparison-value">47.7%</span>.<br />Markets said <span class="market-color" id="market-comparison-value">about 90%</span>.</h2>
+        </div>
+        <div class="comparison" role="img" aria-label="Model estimate 47.7 percent compared with professional market estimate about 90 percent">
+          <div class="comparison-row">
+            <span>Treasury-only model</span>
+            <div class="track"><i id="model-comparison-bar" style="--width:47.7%"></i></div>
+            <b id="model-comparison-label">47.7%</b>
+          </div>
+          <div class="comparison-row market">
+            <span>Fed-funds futures</span>
+            <div class="track"><i id="market-comparison-bar" style="--width:90%"></i></div>
+            <b id="market-comparison-label">≈90%</b>
+          </div>
+        </div>
+        <p class="reality-copy">Treasury yields are clues, not contracts on a specific Fed meeting. Professional forecasts also absorb fresh inflation data, Fed communication, and fed-funds futures. This classroom model is useful precisely because we can see where its information ends.</p>
+      </section>
+
+      <section class="takeaway">
+        <!-- <h2>Hazard is conditional.<br />Survival carries the story forward.<br /><span>And every model has an information diet.</span></h2> -->
+        <div class="takeaway-grid">
+          <div><b id="takeaway-hazard">47.7%</b><span>conditional hazard at each scheduled meeting</span></div>
+          <div><b id="takeaway-survival">14.3%</b><span>model probability of no hike through December</span></div>
+          <div><b id="takeaway-interval">32–77%</b><span>bootstrap interval</span></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <p class="section-tag">Methods & sources</p>
+        <p>Model inputs are official Federal Reserve and U.S. Treasury series. Professional comparison is reported by Reuters. Analysis is educational, not investment advice.</p>
+      </div>
+      <ul id="source-list"></ul>
+      <p class="byline"><span id="author"></span> · Data as of <span id="footer-date"></span></p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
