@@ -55,9 +55,9 @@ h1 em { color:var(--ink); font-style:normal; }
 .scroll-cue b { font-size:1.5rem; color:var(--yellow); animation:bob 1.5s infinite; }
 @keyframes bob { 50% { transform:translateY(7px); } }
 .hero-orbit { align-self:center; justify-self:center; width:min(34vw,440px); aspect-ratio:1; position:relative; display:grid; place-content:center; text-align:center; z-index:1; }
-.orbit { position:absolute; inset:0; border:1px solid rgba(255,255,255,.24); border-radius:50%; }
+.orbit { position:absolute; inset:0; border:1px solid rgba(139, 139, 139, 0.24); border-radius:50%; }
 .orbit-one { animation:spin 14s linear infinite; border-top:6px solid var(--darkgreen); }
-.orbit-two { inset:13%; animation:spin 9s linear infinite reverse; border-right:3px solid var(--lightgreen); }
+.orbit-two { inset:13%; animation:spin 9s linear infinite reverse; border-right:3px solid var(--darkgreen); }
 @keyframes spin { to { transform:rotate(360deg); } }
 .hero-number { font:700 clamp(4.4rem,9vw,7.5rem)/1 "Space Grotesk"; }
 .hero-number span { font-size:.38em; color:var(--darkgreen); }
